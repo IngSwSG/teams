@@ -30,4 +30,23 @@ class UserTest extends TestCase
         // Verifica que se haya redirigido a la página de usuarios después de la eliminación
         $response->assertRedirect(route('users.index'));
     }
+
+    public function testclasificarPorEquipo()
+    {
+    
+        $user = User::factory()->create();
+
+        User::factory()->create(['job' => 'Programador']);
+        User::factory()->create(['job' => 'Diseñador']);
+        User::factory()->create(['job' => 'Tester']);
+
+        // Hacer una solicitud GET a la ruta de clasificación
+        $response = $this->actingAs($user)->get(route('users.equipos'));
+    
+    
+        // Verificar que la respuesta contenga los datos esperados en la vista
+        $response->assertSeeText('Equipos');
+        $response->assertSeeText('Programador');
+        $response->assertSeeText('1');
+    }
 }
