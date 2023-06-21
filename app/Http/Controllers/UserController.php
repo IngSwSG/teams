@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -15,6 +16,18 @@ class UserController extends Controller
        return view('users.index', [
          'users' => $users
        ]);
+    }
+    public function filter(Request $request)
+    {
+        $search = $request->input('search');
+    
+        $users = User::where('name', 'like', "%$search%")
+                     ->orWhere('email', 'like', "%$search%")
+                     ->get();
+    
+          return view('users.index', [
+            'users' => $users
+          ]);
     }
   
     public function create(Request $request)
@@ -56,7 +69,7 @@ class UserController extends Controller
         'email' => [
             'required',
             'email',
-            'unique:users,email'
+            Rule::unique('users')->ignore($user_id),
         ]
     ]);
 

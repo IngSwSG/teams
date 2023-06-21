@@ -6,14 +6,23 @@
     </x-slot>
 
     <div class="py-12">
-        
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6 bg-white">
             <div class="py-4 border-b">
-
                 <a href="{{ route('create') }}">
                     <x-primary-button>{{ __('Create User') }}</x-primary-button>
                 </a>
             </div>
+            <form action="{{ route('users.filter') }}" method="GET">
+                <div class="py-4 border-b">
+                    <label for="search" class="block font-semibold text-gray-700">Filter by Name or Email:</label>
+                    <input type="text" name="search" id="search" class="border border-gray-300 rounded px-3 py-2 w-full" value="{{ request()->query('search') }}">
+                </div>
+                <div class="py-4">
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        {{ __('Apply Filter') }}
+                    </button>
+                </div>
+            </form>
             <ul role="list" class="divide-y divide-gray-100">
                 @foreach ($users as $user)
                     <li class="flex justify-between gap-x-6 py-5">
@@ -37,11 +46,7 @@
                         </form>
                     </li>
                 @endforeach
-
-
             </ul>
-
-
         </div>
     </div>
 </x-app-layout>
